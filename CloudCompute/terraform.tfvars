@@ -10,7 +10,14 @@ sg_ingress_rules = [
     from_port   = 22,
     to_port     = 22,
     protocol    = "tcp",
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["201.233.87.29/32"]
+  },
+  {
+    description = "Access to port 80 from the exterior",
+    from_port   = 80,
+    to_port     = 80,
+    protocol    = "tcp",
+    cidr_blocks = ["0.0.0.0/0"],
   }
 ]
 
