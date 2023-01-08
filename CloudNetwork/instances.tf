@@ -5,6 +5,7 @@ resource "aws_instance" "vm1" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.nebo-sg.id]
   subnet_id              = aws_subnet.snet-private.id
+  monitoring             = true
 
   tags = {
     "Name" = "vm1"
@@ -18,6 +19,7 @@ resource "aws_instance" "vm2" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.nebo-sg.id]
   subnet_id              = aws_subnet.snet-public.id
+  monitoring             = true
 
   tags = {
     "Name" = "vm2"
