@@ -1,7 +1,7 @@
 # instance variables values
-ami_id = "ami-06bb3ee01d992f30d"
+ami_id        = "ami-06bb3ee01d992f30d"
 instance_type = "t2.micro"
-key_name = "us-west-key"
+key_name      = "us-west-key"
 
 # security group variable values
 sg_ingress_rules = [

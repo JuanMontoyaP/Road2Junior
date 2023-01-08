@@ -1,5 +1,6 @@
 resource "aws_security_group" "sg-r2j" {
-  name = "r2j-sg"
+  name   = "r2j-sg"
+  vpc_id = aws_vpc.r2j-vpc.id
 
   dynamic "ingress" {
     for_each = var.sg_ingress_rules
