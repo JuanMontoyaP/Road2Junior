@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    environment {
+        dockerhub=credentials('dockerhub')
+    }
+
+    stages {
+
+        stage("verify tooling") {
+            steps {
+                sh '''
+                    docker version
+                    docker info
+                    python3 --version
+                    pip3 --version
+                '''
+            }
+        }
+
+        stage("Create venv and install requirements") {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    source venv/bin/activate
+                '''
+
+                sh 'ls -l'
+            }
+        }
+    }
+}
