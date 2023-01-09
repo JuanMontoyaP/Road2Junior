@@ -43,7 +43,7 @@ pipeline {
         stage("Build image") {
             steps {
                 dir("CloudContainer") {
-                    sh "docker build -t jpmontoya19/nebo:v${params.TAG} ."
+                    sh "docker build -t jpmontoya19/nebo:${params.TAG} ."
                 }
             }
         }
@@ -52,8 +52,9 @@ pipeline {
             steps {
                 sh '''
                     echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin
-                    docker push jpmontoya19/nebo:v${params.TAG}
                 '''
+
+                sh "docker push jpmontoya19/nebo:${params.TAG}"
             }
         }
     }
