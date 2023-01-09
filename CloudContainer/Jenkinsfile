@@ -35,5 +35,13 @@ pipeline {
                 }
             }
         }
+
+        stage("Build image") {
+            steps {
+                dir("CloudContainer") {
+                    sh "docker build -t jpmontoya19/nebo:v1 ."
+                }
+            }
+        }
     }
 }
