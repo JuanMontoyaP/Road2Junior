@@ -21,7 +21,12 @@ pipeline {
         stage("Run tests") {
             steps {
                 dir("CloudContainer") {
-                    sh "pip3 install -r requirements_test.txt"
+                    sh '''
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip3 install -r requirements_test.txt
+                    '''
+
                     sh "pip3 freeze"
                     sh "pytest --version"
                     sh "pytest"
