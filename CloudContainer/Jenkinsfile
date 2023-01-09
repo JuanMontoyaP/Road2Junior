@@ -20,12 +20,25 @@ pipeline {
 
         stage("Create venv and install requirements") {
             steps {
-                sh '''
-                    python3 -m venv venv
-                    source venv/bin/activate
-                '''
 
-                sh 'ls -l'
+                dir("CloudContainer") {
+                    sh '''
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip3 install -r requirements.txt
+                    '''
+
+                    sh 'ls -l'
+                    sh 'pwd'
+                }
+            }
+        }
+
+        stage("Run tests") {
+            steps {
+                sh '''
+                    deactivate
+                '''
             }
         }
     }
