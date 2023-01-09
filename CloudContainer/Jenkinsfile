@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'TAG', description: 'Version of the image to be created')
+    }
+
     environment {
         dockerhub=credentials('dockerhub')
     }
@@ -39,8 +43,17 @@ pipeline {
         stage("Build image") {
             steps {
                 dir("CloudContainer") {
-                    sh "docker build -t jpmontoya19/nebo:v1 ."
+                    sh "docker build -t jpmontoya19/nebo:v${params.TAG} ."
                 }
+            }
+        }
+
+        stage("Push image to Dockerhub") {
+            steps {
+                sh '''
+                    echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin
+                    docker push jpmontoya19/nebo:v${params.TAG}
+                '''
             }
         }
     }
