@@ -18,19 +18,10 @@ pipeline {
             }
         }
 
-        stage("Install requirements") {
-            steps {
-                dir("CloudContainer") {
-                    sh '''
-                        pip3 install -r requirements_test.txt
-                    '''
-                }
-            }
-        }
-
         stage("Run tests") {
             steps {
                 dir("CloudContainer") {
+                    sh "pip3 install -r requirements_test.txt"
                     sh "pytest --version"
                     sh "pytest"
                 }
