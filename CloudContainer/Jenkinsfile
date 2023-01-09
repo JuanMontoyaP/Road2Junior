@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'TAG', description: 'Version of the image to be created')
+    }
+
+    environment {
+        dockerhub=credentials('dockerhub')
+    }
+
+    stages {
+
+        stage("verify tooling") {
+            steps {
+                sh '''
+                    docker version
+                    docker info
+                    python3 --version
+                    pip3 --version
+                '''
+            }
+        }
+
+        stage("Run tests") {
+            steps {
+                dir("CloudContainer") {
+                    sh '''
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip3 install -r requirements_test.txt
+                    '''
+
+                    sh '''
+                        source venv/bin/activate
+                        pytest --version
+                        pytest
+                    '''
+                }
+            }
+        }
+
+        stage("Build image") {
+            steps {
+                dir("CloudContainer") {
+                    sh "docker build -t jpmontoya19/nebo:${params.TAG} ."
+                }
+            }
+        }
+
+        stage("Push image to Dockerhub") {
+            steps {
+                sh '''
+                    echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin
+                '''
+
+                sh "docker push jpmontoya19/nebo:${params.TAG}"
+            }
+        }
+    }
+}
