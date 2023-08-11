@@ -60,3 +60,26 @@ resource "aws_route_table_association" "crta-private-subnet-nebo" {
   subnet_id      = aws_subnet.snet-private.id
   route_table_id = aws_route_table.private-route-nebo.id
 }
+
+resource "aws_network_acl" "public-network-acl" {
+  vpc_id     = aws_vpc.vnet-nebo.id
+  subnet_ids = [aws_subnet.snet-private.id]
+
+  ingress {
+    from_port  = 22
+    to_port    = 22
+    protocol   = "tcp"
+    action     = "allow"
+    cidr_block = "10.0.0.0/17"
+    rule_no    = 100
+  }
+
+  egress {
+    from_port  = 0
+    to_port    = 0
+    protocol   = "-1"
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    rule_no    = 200
+  }
+}
